@@ -7,7 +7,7 @@ class Node {
 	}
 }
 
-export class LRUCache {
+class LRUCache {
 	constructor(capacity) {
 		this.cap = capacity;
 		this.cache = new Map(); // map key to node
