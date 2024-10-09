@@ -10,7 +10,7 @@ class Node {
 class LRUCache {
     constructor(capacity) {
         this.cap = capacity
-        this.cache = {} // map key to node
+        this.cache = new Map() // map key to node
 
         // Intialize left (lru) and right (mru) pointers
         this.left = new Node(0, 0)
