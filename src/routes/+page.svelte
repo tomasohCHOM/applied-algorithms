@@ -1,60 +1,70 @@
 <script>
+	import { emojis } from '$lib/emojis.js';
+	import { LRUCache } from '$lib/lruCache.js';
 	import '../globals.css';
 
-	const emojis = [
-		'aaronpog',
-		'acm',
-		'ai',
-		'alanpog',
-		'capycool',
-		'capyprofessional',
-		'design',
-		'heartalgo',
-		'heartmarketing',
-		'oss',
-		'algo',
-		'capyexcite',
-		'capyshock',
-		'dev',
-		'heartdesign',
-		'heartoss',
-		'specialevents',
-		'aaronpog',
-		'capyangry',
-		'capyflushed',
-		'capysmart',
-		'gamedev',
-		'heartdev',
-		'icpc',
-		'acm',
-		'capyclassy',
-		'capyhappy',
-		'capysob',
-		'heartacm',
-		'heartgamedev',
-		'marketing',
-		'ai',
-		'capyconfuzzle',
-		'capylove',
-		'capyvibe',
-		'heartai',
-		'hearticpc',
-		'nodebuds'
-	];
+	const cache = new LRUCache(5);
 </script>
 
-<h1>CapyCache</h1>
+<main>
+	<h1>CapyCache</h1>
 
-<div>
-	{#each emojis as emoji}
-		<img src="/{emoji}.webp" alt="Emoji" class="emoji" />
-	{/each}
-</div>
+	<p>LRU Cache implementation</p>
 
-<div></div>
+	<div class="keyboard">
+		<h2>Recently Used</h2>
+		<div class="keys"></div>
+
+		<h2>Emojis</h2>
+		<div class="keys">
+			{#each emojis as emoji}
+				<img
+					src="/{emoji}.webp"
+					alt="Emoji"
+					class="emoji"
+					on:click={() => {
+						cache.put(emoji, emoji);
+					}}
+				/>
+			{/each}
+		</div>
+	</div>
+
+	<div class="cache">
+		<div class="head">HEAD</div>
+		<div class="tail">TAIL</div>
+	</div>
+</main>
 
 <style>
+	main {
+		max-width: 1024px;
+		margin-inline: auto;
+	}
+
 	.emoji {
 		width: 32px;
+		cursor: pointer;
+	}
+
+	.keyboard {
+		width: 100%;
+		padding: 1rem;
+		background-color: rgb(var(--color-secondary));
+		border-radius: 0.75rem;
+	}
+
+	.keys {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.cache {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 </style>
