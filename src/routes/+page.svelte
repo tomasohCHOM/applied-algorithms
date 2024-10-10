@@ -6,15 +6,11 @@
 	const cacheCapacity = 10;
 
 	let cache = new LRUCache(cacheCapacity);
-	// TODO: Fix issue where if you click an emoji
-	// that's already in the cache it doesn't update
-	// the state of the cache
-	function getCacheItems() {
-		return Array.from(cache.cache.values()).map((item) => item.val); // Get the emoji values from the cache
-	}
 
-	function putEmoji(emoji) {
-		cache.put(emoji, emoji);
+	function getEmojiFromCache(emoji) {
+		if (cache.get(emoji) == -1) {
+			cache.put(emoji, emoji);
+		}
 		cache = cache;
 	}
 </script>
@@ -28,8 +24,8 @@
 		<h2>Recently Used (Limit: {cacheCapacity})</h2>
 		{#key cache}
 			<div class="keys">
-				{#each getCacheItems() as emoji (emoji)}
-					<img src="/{emoji}.webp" alt="Emoji" class="emoji" />
+				{#each cache.getAll() as emoji (emoji)}
+					<img src="/{emoji.key}.webp" alt="Emoji" class="emoji" />
 				{/each}
 			</div>
 		{/key}
@@ -40,8 +36,8 @@
 				<span
 					role="button"
 					tabindex="0"
-					on:click={() => putEmoji(emoji)}
-					on:keydown={() => putEmoji(emoji)}
+					on:click={() => getEmojiFromCache(emoji)}
+					on:keydown={() => getEmojiFromCache(emoji)}
 					tabIndex="0"
 				>
 					<img src="/{emoji}.webp" alt="Emoji" class="emoji" />

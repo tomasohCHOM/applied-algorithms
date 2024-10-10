@@ -13,8 +13,8 @@ export class LRUCache {
 		this.cache = new Map(); // map key to node
 
 		// Intialize left (lru) and right (mru) pointers
-		this.left = new Node(0, 0);
-		this.right = new Node(0, 0);
+		this.left = new Node('LRU', 0);
+		this.right = new Node('MRU', 0);
 
 		// Link left and right nodes to form doubly linked list
 		this.left.next = this.right;
@@ -62,6 +62,15 @@ export class LRUCache {
 			this.remove(lru);
 			this.cache.delete(lru.key);
 		}
-		console.log(this);
+	}
+
+	getAll() {
+		let current = this.right.prev;
+		let result = [];
+		while (current !== this.left) {
+			result.push({ key: current.key, value: current.val });
+			current = current.prev;
+		}
+		return result;
 	}
 }
