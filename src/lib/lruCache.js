@@ -12,13 +12,13 @@ export class LRUCache {
 		this.cap = capacity;
 		this.cache = new Map(); // map key to node
 
-		// Intialize left (lru) and right (mru) pointers
-		this.left = new Node('LRU', 0);
-		this.right = new Node('MRU', 0);
+		// Intialize left (lru) and most_recently_used (mru) pointers
+		this.least_recently_used = new Node('LRU', 0);
+		this.most_recently_used = new Node('MRU', 0);
 
-		// Link left and right nodes to form doubly linked list
-		this.left.next = this.right;
-		this.right.prev = this.left;
+		// Link left and most_recently_used nodes to form doubly linked list
+		this.least_recently_used.next = this.most_recently_used;
+		this.most_recently_used.prev = this.least_recently_used;
 	}
 
 	remove(node) {
@@ -29,8 +29,8 @@ export class LRUCache {
 	}
 
 	insert(node) {
-		let prev = this.right.prev;
-		let next = this.right;
+		let prev = this.most_recently_used.prev;
+		let next = this.most_recently_used;
 
 		prev.next = node;
 		node.prev = prev;
@@ -58,16 +58,16 @@ export class LRUCache {
 		this.cache.set(key, newNode);
 
 		if (this.cache.size > this.cap) {
-			let lru = this.left.next;
+			let lru = this.least_recently_used.next;
 			this.remove(lru);
 			this.cache.delete(lru.key);
 		}
 	}
 
 	getAll() {
-		let current = this.right.prev;
+		let current = this.most_recently_used.prev;
 		let result = [];
-		while (current !== this.left) {
+		while (current !== this.least_recently_used) {
 			result.push({ key: current.key, value: current.val });
 			current = current.prev;
 		}
