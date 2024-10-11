@@ -18,7 +18,20 @@
 <main>
 	<h1>CapyCache</h1>
 
-	<p>LRU Cache implementation</p>
+	<p>
+		A <b>Least Recently Used</b> (LRU) Cache is a caching mechanism where a limited number of items
+		are stored and evicts the least recently accessed item when the cache reaches its maximum
+		capacity. The cache maintains a list of items, where the most recently accessed items are
+		usually placed at the front of the list and the least recently used ones are placed at the end.
+		The data structure is often implemented with a <b>doubly linked list</b> and a <b>hash map</b> to
+		optimize insertion and update operations.
+	</p>
+
+	<p>
+		LRU Cache can be applied in a handful of ways. In this example, we are simulating an emoji
+		keyboard, where we store the 10 <b>most recent</b> emojis in the cache. Once we reach full capacity,
+		the least recent emojis are no longer part of the cache.
+	</p>
 
 	<div class="keyboard">
 		<h2>Recently Used (Limit: {cacheCapacity})</h2>
@@ -45,20 +58,33 @@
 			{/each}
 		</div>
 	</div>
+
+	<div class="bottom">
+		<span>
+			Developed with 💚 by <a target="_blank" href="https://github.com/acmcsufoss">acmcsufoss.</a>
+		</span>
+		<span><a target="_blank" href="https://github.com/tomasohCHOM/capycache">Source Code</a></span>
+	</div>
 </main>
 
 <style>
 	main {
-		max-width: 1024px;
-		margin-inline: auto;
+		max-width: 768px;
+		margin-inline: 1.5rem;
 	}
 
 	h2 {
 		margin: 1rem 0;
+		font-size: 1.25rem;
+	}
+
+	a {
+		color: rgb(var(--color-contrast));
+		text-underline-offset: 2px;
 	}
 
 	.emoji {
-		width: 32px;
+		width: 26px;
 		cursor: pointer;
 	}
 
@@ -76,9 +102,14 @@
 		align-items: center;
 	}
 
-	/* .cache {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	} */
+	.bottom {
+		margin-block: 1rem;
+		display: grid;
+	}
+
+	@media screen and (min-width: 768px) {
+		main {
+			margin-inline: auto;
+		}
+	}
 </style>
