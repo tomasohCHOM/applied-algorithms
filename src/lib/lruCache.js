@@ -12,13 +12,13 @@ export class LRUCache {
 		this.cap = capacity;
 		this.cache = new Map(); // map key to node
 
-		// Intialize left (lru) and most_recently_used (mru) pointers
-		this.least_recently_used = new Node('LRU', 0);
-		this.most_recently_used = new Node('MRU', 0);
+		// Intialize head (mru) and tail (lru) pointers
+		this.mostRecentlyUsed = new Node('MRU', 0);
+		this.leastRecentlyUsed = new Node('LRU', 0);
 
-		// Link left and most_recently_used nodes to form doubly linked list
-		this.least_recently_used.next = this.most_recently_used;
-		this.most_recently_used.prev = this.least_recently_used;
+		// Link head and tail nodes to form doubly linked list
+		this.mostRecentlyUsed.next = this.leastRecentlyUsed;
+		this.leastRecentlyUsed.prev = this.mostRecentlyUsed;
 	}
 
 	remove(node) {
@@ -29,13 +29,13 @@ export class LRUCache {
 	}
 
 	insert(node) {
-		let prev = this.most_recently_used.prev;
-		let next = this.most_recently_used;
+		let prevMRU = this.mostRecentlyUsed.next;
 
-		prev.next = node;
-		node.prev = prev;
-		node.next = next;
-		next.prev = node;
+		// Insert the node to the front (as the MRU item)
+		prevMRU.prev = node;
+		node.next = prevMRU;
+		node.prev = this.mostRecentlyUsed;
+		this.mostRecentlyUsed.next = node;
 	}
 
 	get(key) {
@@ -58,18 +58,18 @@ export class LRUCache {
 		this.cache.set(key, newNode);
 
 		if (this.cache.size > this.cap) {
-			let lru = this.least_recently_used.next;
+			let lru = this.leastRecentlyUsed.prev;
 			this.remove(lru);
 			this.cache.delete(lru.key);
 		}
 	}
 
 	getAll() {
-		let current = this.most_recently_used.prev;
-		let result = [];
-		while (current !== this.least_recently_used) {
+		let current = this.mostRecentlyUsed.next;
+		const result = [];
+		while (current !== this.leastRecentlyUsed) {
 			result.push({ key: current.key, value: current.val });
-			current = current.prev;
+			current = current.next;
 		}
 		return result;
 	}
